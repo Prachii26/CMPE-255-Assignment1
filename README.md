@@ -47,7 +47,6 @@ assignment-1/
 └── requirements.txt                    # optional pinning for reproducibility
 ```
 
-> When you run the notebook, artifacts are created in `./models` and `./export`. Move them into your repo structure as shown above before committing.
 
 ---
 
@@ -125,7 +124,7 @@ gradio
 - `confusion_matrix.png` and `confusion_matrix_normalized.png` (optional save)  
 - Misclassification gallery figure(s)
 
-> You can add a small save snippet around the plotting functions to persist figures into `./export/` for Git commits.
+
 
 ---
 
@@ -145,7 +144,7 @@ best_model.export("export/savedmodel")  # or best_model.save(..., save_format="t
 ```
 
 ### Build a fresh inference‑only model (no augmentation), copy weights
-> See Chunk 6 cell “Build fresh inference‑only model”. This prevents conversion issues and matches training preprocessing.
+
 
 ### TFLite conversion (robust)
 - FP32 and float16 models saved to `export/model_fp32.tflite` and `export/model_float16.tflite`.  
