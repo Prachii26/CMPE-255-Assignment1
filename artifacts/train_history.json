@@ -1,0 +1,82 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 1.4718191277621717,
+    "train_acc": 0.43859649122807015,
+    "val_loss": 1.2192423446678822,
+    "val_acc": 0.7453703703703703,
+    "frozen_backbone": true
+  },
+  {
+    "epoch": 2,
+    "train_loss": 1.0191002482809164,
+    "train_acc": 0.7636544190665343,
+    "val_loss": 0.8620393026022264,
+    "val_acc": 0.8549382716049383,
+    "frozen_backbone": true
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.7203801230893392,
+    "train_acc": 0.8593181065872227,
+    "val_loss": 0.5840844368493116,
+    "val_acc": 0.9197530864197531,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.5953485133315664,
+    "train_acc": 0.917907977490897,
+    "val_loss": 0.5616978336999445,
+    "val_acc": 0.9305555555555556,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 5,
+    "train_loss": 0.5542440318540405,
+    "train_acc": 0.9361138695796094,
+    "val_loss": 0.5480321929042722,
+    "val_acc": 0.9398148148148148,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 6,
+    "train_loss": 0.5129698198862085,
+    "train_acc": 0.9589539887454486,
+    "val_loss": 0.5392696095837487,
+    "val_acc": 0.9429012345679012,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 7,
+    "train_loss": 0.498348622300774,
+    "train_acc": 0.9665673618007282,
+    "val_loss": 0.5278632287625913,
+    "val_acc": 0.9398148148148148,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 8,
+    "train_loss": 0.4883112600606548,
+    "train_acc": 0.9708705726580602,
+    "val_loss": 0.5264883983282396,
+    "val_acc": 0.9444444444444444,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 9,
+    "train_loss": 0.47692720252170895,
+    "train_acc": 0.9781529294935452,
+    "val_loss": 0.5219342903590497,
+    "val_acc": 0.9444444444444444,
+    "frozen_backbone": false
+  },
+  {
+    "epoch": 10,
+    "train_loss": 0.4727800197452948,
+    "train_acc": 0.9801390268123138,
+    "val_loss": 0.5269137216203007,
+    "val_acc": 0.941358024691358,
+    "frozen_backbone": false
+  }
+]

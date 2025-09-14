@@ -1,0 +1,18 @@
+{
+  "split": "val",
+  "accuracy": 0.941358024691358,
+  "macro_f1": 0.9403673989938394,
+  "weighted_f1": 0.9413886828863218,
+  "top3_accuracy": 0.9922839506172839,
+  "num_samples": 648,
+  "classes": [
+    "daisy",
+    "dandelion",
+    "rose",
+    "sunflower",
+    "tulip"
+  ],
+  "report_csv": "/content/artifacts/classification_report_val.csv",
+  "confusion_counts_png": "/content/artifacts/confusion_matrix_val_counts.png",
+  "confusion_norm_png": "/content/artifacts/confusion_matrix_val_normalized.png"
+}

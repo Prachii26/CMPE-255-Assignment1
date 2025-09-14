@@ -1,0 +1,10 @@
+{
+  "num_classes": 5,
+  "class_names": [
+    "daisy",
+    "dandelion",
+    "rose",
+    "sunflower",
+    "tulip"
+  ]
+}

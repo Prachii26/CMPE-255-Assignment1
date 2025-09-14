@@ -1,0 +1,14 @@
+{
+  "dataset_dir": "/kaggle/input/flowers-recognition/flowers",
+  "artifacts_dir": "/content/artifacts",
+  "image_size": 224,
+  "batch_size": 16,
+  "num_workers": 1,
+  "model_name": "efficientnet_b0",
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "label_smoothing": 0.1,
+  "epochs": 10,
+  "freeze_backbone_epochs": 2,
+  "mixed_precision": true
+}

@@ -1,0 +1,22 @@
+{
+  "width": {
+    "count": 500,
+    "min": 134,
+    "p05": 159.0,
+    "median": 320.0,
+    "mean": 340.376,
+    "p95": 500.0,
+    "max": 500
+  },
+  "height": {
+    "count": 500,
+    "min": 80,
+    "p05": 159.0,
+    "median": 240.0,
+    "mean": 255.262,
+    "p95": 335.0,
+    "max": 425
+  },
+  "corrupted_or_unreadable": 0,
+  "sampled_images": 4317
+}
