@@ -112,3 +112,5 @@ Dataset: alxmamaev/flowers-recognition
 PyTorch & TorchVision teams for pretrained backbones.
 
 ---
+## 📰 Medium Article link
+https://medium.com/@prachigupta2610/from-notebook-to-production-ready-a-crisp-dm-walkthrough-for-flower-classification-on-limited-79ca71de1018
