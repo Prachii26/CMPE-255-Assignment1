@@ -1,217 +1,114 @@
-# Assignment 1 — Flower Classification (CRISP-DM, Transfer Learning)
+# 🌸Flower Classification (CRISP-DM, PyTorch, EfficientNet-B0)
 
-A lean, reproducible image classification project on the Kaggle **Flowers Recognition** dataset using **TensorFlow/Keras**. It follows the **CRISP-DM** methodology end‑to‑end, is optimized for **limited compute**, and ships with **explainability (Grad-CAM)** and **deployment (SavedModel & TFLite)**.
+A resource-efficient flower image classifier (daisy, dandelion, rose, sunflower, tulip) built end-to-end with the **CRISP-DM** methodology.  
+Designed for **limited compute** (CPU-friendly), using **transfer learning** (EfficientNet-B0 / MobileNetV3-Small), **data augmentation**, and **regularization**.
+
+**Validation (example)**: Acc **94.14%**, Macro-F1 **94.04%**, Top-3 **99.23%**.  
+
 
 ---
 
-## 📦 Quick Start
+## 📌 Highlights
+- **CRISP-DM**: Business Understanding → Data Understanding → Preparation → Modeling → Evaluation → Deployment  
+- **Transfer learning**: EfficientNet-B0 (default) or MobileNetV3-Small (faster)  
+- **Resource-aware**: small image size (224), modest batch, early stopping, mixed precision on CUDA  
+- **Reproducible**: manifest & splits saved under `artifacts/`, config snapshot, deterministic loaders
+- **Deployment-ready**: single/batch inference helpers, optional TTA, TorchScript/ONNX export
 
-> You can run the whole pipeline from the provided notebook cells (Chunks 1–7). The project is modular; each chunk is self‑contained and documented.
+---
 
+## 🧱 Repository Structure
+
+├── FlowerClassificationModel.ipynb
+
+├── artifacts/ # generated: configs, splits, metrics, plots, checkpoints
+
+├── requirements.txt
+
+├── .gitignore
+
+├── README.me
+
+---
+
+## 🚀 Quickstart
+
+### 1) Set up environment
 ```bash
-# (Optional) Install deps in your environment
-pip install -U kagglehub tensorflow pandas scikit-learn matplotlib pillow tqdm gradio
+# clone
+git clone https://github.com/Prachii26/CMPE-255-Assignment1.git
 
-# Start Jupyter and open the notebook
-jupyter notebook
+# (recommended) create a virtual env
+python -m venv .venv
+source ./.venv/bin/activate        # Windows: .\.venv\Scripts\activate
+
+# install deps
+pip install -r requirements.txt
 ```
+### 2) Open the notebook
 
-**Data download (in-notebook):**
-```python
-import kagglehub
-path = kagglehub.dataset_download("alxmamaev/flowers-recognition")
-print("Kaggle dataset path:", path)
-```
+Launch Jupyter/Lab and run the notebook top-to-bottom:
 
----
+Chunk 1 – Setup & dataset download via KaggleHub
 
-## 🗂️ Repository / Folder Structure
+Chunk 2 – Data understanding, stratified splits, EDA
 
-Suggested structure for your GitHub repo:
+Chunk 3 – Data preparation: transforms, datasets, dataloaders
 
-```
-assignment-1/
-├── README.md                           # ← this file
-├── notebooks/
-│   └── FlowerClassification.ipynb      # your working notebook
-├── models/
-│   ├── best_model.keras                # trained best model (from Chunk 3/6)
-│   └── id2label.json                   # label maps (Chunk 3)
-│       label2id.json
-├── export/                             # deployment artifacts
-│   ├── savedmodel/                     # TF SavedModel export (Chunk 6)
-│   ├── model_fp32.tflite               # TFLite FP32 (Chunk 6/6b)
-│   └── model_float16.tflite            # TFLite float16 (preferred on CPU)
-├── scripts/
-│   └── flower_cli.py                   # tiny CLI for inference (Chunk 7)
-└── requirements.txt                    # optional pinning for reproducibility
-```
+Chunk 4 – Modeling: EfficientNet-B0, freeze→finetune, early stopping
 
+Chunk 5 – Evaluation: accuracy, macro-F1, confusion matrices, curves
+
+Chunk 6 – Deployment: inference helpers, TorchScript/ONNX export
+
+Dataset: Kaggle alxmamaev/flowers-recognition (downloaded automatically by the notebook via kagglehub).
 
 ---
 
-## 🧭 CRISP-DM Walkthrough & How to Run
+## 📊 Results (example)
 
-Each chunk corresponds to a CRISP‑DM phase and provides ready‑to‑run cells:
+**Validation: Acc 94.14%, Macro-F1 94.04%, Weighted-F1 94.14%, Top-3 99.23%**
 
-1) **Business & Data Understanding (Chunk 1)**  
-   - Goal: accurate flower classification with low compute.  
-   - Actions: environment setup, dataset download, quick EDA (class balance & samples).
+Check artifacts/classification_report_val.csv and artifacts/confusion_matrix_val_* for details.
 
-2) **Data Preparation (Chunk 2)**  
-   - Stratified **train/val/test** splits, efficient **tf.data** pipelines, **class weights**, and light **on‑model augmentation**.
+___
+## ⚙️ Configuration & Reproducibility
 
-3) **Modeling (Chunk 3)**  
-   - **Transfer learning** with **MobileNetV2 (default)** or **EfficientNetB0**.  
-   - Two‑phase training: **warm‑up (frozen backbone)** → **fine‑tune (top layers)**.  
-   - Fixed LR handling (float LRs; `ReduceLROnPlateau` compatible).  
-   - Artifacts saved: `models/best_model.keras`, `models/id2label.json`, `models/label2id.json`.
+All tunables live in a Config dataclass (image size, batch size, LR, label smoothing, etc.).
 
-4) **Evaluation (Chunk 4)**  
-   - Test **accuracy** & **Top‑3**, **classification report**, **confusion matrices**, and **misclassification gallery**.
+A snapshot is saved to artifacts/config.json.
 
-5) **Explainability (Chunk 5)**  
-   - **Grad‑CAM** utilities (final robust version) with gallery & single‑image helpers.  
-   - Works reliably by **rebuilding the forward pass** for a single connected graph.
+Stratified splits are exported to artifacts/train.csv, val.csv, test.csv.
 
-6) **Deployment — Exports (Chunk 6 & 6b)**  
-   - Build a **fresh inference‑only model** (no augmentation) and **copy weights**.  
-   - Export **SavedModel** and convert to **TFLite** (FP32 + float16) with robust fallbacks.  
-   - Parity checks via cosine similarity and TFLite sanity run.
+---
+## 🧪 Inference & Export
 
-7) **Deployment — Interfaces (Chunk 7)**  
-   - **Unified predictor** (Keras & TFLite).  
-   - **CLI** script (`scripts/flower_cli.py`) and an optional **Gradio** mini‑app.
+Use the Deployment chunk to:
+
+Run single or batch predictions with top-k labels (optional TTA).
+
+Export TorchScript (model_torchscript.pt) for portable CPU execution.
+
+(Optional) Export ONNX for cross-runtime serving.
 
 ---
 
-## 🧪 Reproducibility
+## 🏗️ Design Choices
 
-- Global seed: `42` (see `set_global_seed`).  
-- Recommended versions (print cell provided in Chunk 6):
-  - Python ≥ 3.10
-  - TensorFlow ≥ 2.15 / Keras 3+
-  - numpy, pandas, scikit‑learn, matplotlib, pillow, tqdm, gradio
-- Suggested `requirements.txt`:
-```
-tensorflow>=2.15
-keras>=3.0.0
-numpy
-pandas
-scikit-learn
-matplotlib
-pillow
-tqdm
-kagglehub
-gradio
-```
+**EfficientNet-B0**: best accuracy/FLOP trade-off; MobileNetV3-Small available for tighter CPU budgets.
+
+**Augmentations**: RandomResizedCrop, flips, color jitter, light rotation.
+
+**Regularization**: label smoothing, AdamW (weight decay), dropout, early stopping, gradient clipping.
+
+**Scheduler**: OneCycleLR for fast, stable convergence in few epochs.
 
 ---
 
-## 🧠 Model Choice & Training Process
+## 🙏 Acknowledgments
 
-- **Backbones:** MobileNetV2 (fast, ~3.5M params) or EfficientNetB0 (~5.3M).  
-- **Why:** small yet strong on small datasets; ideal for CPU‑only training.  
-- **Process:** warm‑up head with frozen backbone → unfreeze top ~20% (BatchNorm frozen) → fine‑tune with lower LR.  
-- **Callbacks:** EarlyStopping, ModelCheckpoint, ReduceLROnPlateau.  
-- **Input:** 224×224 RGB, `[0,1]`, with in‑model augmentation.
+Dataset: alxmamaev/flowers-recognition
+
+PyTorch & TorchVision teams for pretrained backbones.
 
 ---
-
-## 📊 Evaluation Artifacts (examples)
-
-- `classification_report.csv` (optional export from Chunk 4)  
-- `confusion_matrix.png` and `confusion_matrix_normalized.png` (optional save)  
-- Misclassification gallery figure(s)
-
-
-
----
-
-## 🔍 Explainability (Grad‑CAM)
-
-- Robust Grad‑CAM implementation that computes gradients over the **backbone feature map** within a single graph.  
-- **Gallery** for random test images and **single‑image** function for quick inspection.  
-- Use to validate that the model attends to petals/disc florets rather than background.
-
----
-
-## 🚀 Deployment
-
-### SavedModel
-```python
-best_model.export("export/savedmodel")  # or best_model.save(..., save_format="tf")
-```
-
-### Build a fresh inference‑only model (no augmentation), copy weights
-
-
-### TFLite conversion (robust)
-- FP32 and float16 models saved to `export/model_fp32.tflite` and `export/model_float16.tflite`.  
-- The converter attempts: **builtins → SELECT_TF_OPS → concrete function** automatically.
-
-### CLI (TFLite)
-```bash
-python scripts/flower_cli.py path/to/image.jpg --topk 3   --tflite export/model_float16.tflite
-```
-
-### Gradio App (optional)
-```python
-# in notebook
-demo.launch(share=False)
-```
-
----
-
-## ⚠️ Troubleshooting (What we fixed)
-
-- **LR schedule vs `ReduceLROnPlateau`:** created optimizer with **float LR** (not a schedule) so the callback can adjust it.  
-- **Grad‑CAM `KeyError` / graph issues:** rebuilt forward pass inside the CAM function; ensured a single, connected graph; added a fallback gradient path.  
-- **TFLite converter errors:** created a **fresh inference‑only** model (no augmentation), copied weights, and added **robust converter** fallbacks (SELECT_TF_OPS / concrete function).  
-- **Input rank mismatch:** avoided reusing layer instances in a new graph; built a fresh model to prevent extra batch dims.
-
----
-
-## ✅ Deliverables Checklist
-
-- [ ] Notebook with Chunks 1–7 (`notebooks/FlowerClassification.ipynb`)  
-- [ ] Trained model: `models/best_model.keras`  
-- [ ] Label maps: `models/id2label.json`, `models/label2id.json`  
-- [ ] SavedModel export: `export/savedmodel/`  
-- [ ] TFLite models: `export/model_fp32.tflite`, `export/model_float16.tflite`  
-- [ ] CLI: `scripts/flower_cli.py`  
-- [ ] (Optional) Gradio UI ready to launch
-
----
-
-## 📈 Results (fill with your run)
-
-- Test Accuracy: `…`  
-- Top‑3 Accuracy: `…`  
-- Macro F1: `…`  
-
-Include a confusion matrix and a few Grad‑CAM overlays demonstrating correct focus.
-
----
-
-## 📚 Acknowledgments
-
-- Dataset: Kaggle — **Flowers Recognition** by *alxmamaev*.  
-- Backbones: MobileNetV2, EfficientNetB0 (TensorFlow/Keras Applications).
-
----
-
-## 🔐 License
-
-This repository is for coursework (**Assignment 1**). For the dataset, follow Kaggle’s terms of use.
-
----
-
-### Appendix: Minimal End‑to‑End Script (outline)
-
-If you later want to script this outside a notebook, the flow is:
-1) Data indexing → splits → tf.data pipelines.  
-2) Build model → warm‑up → fine‑tune → save artifacts.  
-3) Evaluate (report + confusion matrices).  
-4) Build inference‑only model → export SavedModel → convert to TFLite.  
-5) Inference via CLI/Gradio.
